@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户注册</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link th:href="@{/sui/dist/css/sm.css}" rel="stylesheet">
+    <link th:href="@{/sui/dist/css/sm-extend.css}" rel="stylesheet">
+    <style>
+        .grid-demo .row {
+            text-align: center;
+        }
+        .grid-demo .row + .row {
+            margin-top: 0.75rem;
+        }
+        .grid-demo .row > [class*=col-] {
+            border: 1px solid #ddd;
+        }
+        .icons-demo .icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin: 0.15rem;
+            font-size: 1.2rem;
+            line-height: 2.5rem;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 1.25rem;
+            display: inline-block;
+        }
+        .icon.icon-f7 {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-f7.png");
+        }
+        .icon.icon-form-name {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-name.png");
+        }
+        .icon.icon-form-password {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-password.png");
+        }
+        .icon.icon-form-email {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-email.png");
+        }
+        .icon.icon-form-calendar {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-calendar.png");
+        }
+        .icon.icon-form-tel {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-tel.png");
+        }
+        .icon.icon-form-gender {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-gender.png");
+        }
+        .icon.icon-form-toggle {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-toggle.png");
+        }
+        .icon.icon-form-comment {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-comment.png");
+        }
+        .icon.icon-form-settings {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-settings.png");
+        }
+        .icon.icon-form-url {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-url.png");
+        }
+        .icon.icon-form-tel {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-tel.png");
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-group">
+    <div id="page-view-card" class="page">
+        <div class="content">
+            <div class="card">
+                <div class="card-header">新的评论:</div>
+                <div class="card-content">
+                    <div class="list-block media-list">
+                        <ul>
+                            <li class="item-content">
+                                <div class="item-media">
+                                    <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="44">
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">某人：</div>
+                                    </div>
+                                    <div onclick="showComment(this);" style="font-size: 0.75rem">子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题子标题</div>
+                                </div>
+                            </li>
+                            <li class="item-content">
+                                <div class="item-media">
+                                    <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="44">
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">有i个某人：</div>
+                                    </div>
+                                    <div onclick="showComment(this);" style="font-size: 0.75rem">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                                        测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                                        测试测试测试测试测试测试</div>
+                                </div>
+                            </li>
+                            <li class="item-content">
+                                <div class="item-media">
+                                    <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="44">
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">有i个某人：</div>
+                                    </div>
+                                    <div onclick="showComment(this);" style="font-size: 0.75rem">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                                        测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                                        测试测试测试测试测试测试</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span>发表我的评论</span>
+                    <span></span>
+                </div>
+                <div class="list-block media-list">
+                <ul>
+                    <li class="item-content">
+                        <div class="item-media">
+                            <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="44">
+                        </div>
+                        <div class="item-inner">
+                            <div>夜萧</div>
+                            <div class="item-subtitle">星期一 3:47pm</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-input">
+                            <textarea rows="3" placeholder="评论内容"></textarea>
+                        </div>
+                        <div style="margin-top: 2%" class="col-50"><a id="submit_comment" class="button button-fill button-success">提交</a></div>
+                    </li>
+                </ul>
+            </div>
+            </div>
+
+            <div style="margin: 2% 5%;float: right" class="col-50"><a id="close_btn" class="button button-fill button-danger">关闭</a></div>
+        </div>
+    </div>
+</div>
+
+    <script th:src="@{/js/jquery/jquery.js}"></script>
+    <script th:src="@{/sui/dist/js/zepto.js}"></script>
+    <script th:src="@{/sui/dist/js/sm.js}"></script>
+    <script th:src="@{/sui/dist/js/sm-extend.js}"></script>
+    <script th:src="@{/js/vue.js}"></script>
+    <script th:src="@{/js/validate.js}"></script>
+    <script th:src="@{/js/basic/register.js}"></script>
+    <script th:src="@{/js/layer/layer.js}"></script>
+</body>
+</html>
+
+<script>
+
+    function showComment(obj){
+        layer.open({
+            type: 1,
+            title:'详细评论',
+            area: ['90%', ''],
+            shadeClose: true, //点击遮罩关闭
+            content: '\<\div style="padding:20px;">'+obj.innerText+'\<\/div>'
+        });
+    }
+
+    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+
+    $("#close_btn").click(function(){
+        parent.layer.close(index);
+    });
+
+
+
+</script>

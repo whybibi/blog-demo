@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户登陆</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link th:href="@{/sui/dist/css/sm.css}" rel="stylesheet">
+    <link th:href="@{/sui/dist/css/sm-extend.css}" rel="stylesheet">
+    <style>
+        .grid-demo .row {
+            text-align: center;
+        }
+        .grid-demo .row + .row {
+            margin-top: 0.75rem;
+        }
+        .grid-demo .row > [class*=col-] {
+            border: 1px solid #ddd;
+        }
+        .icons-demo .icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin: 0.15rem;
+            font-size: 1.2rem;
+            line-height: 2.5rem;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 1.25rem;
+            display: inline-block;
+        }
+        .icon.icon-f7 {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-f7.png");
+        }
+        .icon.icon-form-name {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-name.png");
+        }
+        .icon.icon-form-password {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-password.png");
+        }
+        .icon.icon-form-email {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-email.png");
+        }
+        .icon.icon-form-calendar {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-calendar.png");
+        }
+        .icon.icon-form-tel {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-tel.png");
+        }
+        .icon.icon-form-gender {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-gender.png");
+        }
+        .icon.icon-form-toggle {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-toggle.png");
+        }
+        .icon.icon-form-comment {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-comment.png");
+        }
+        .icon.icon-form-settings {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-settings.png");
+        }
+        .icon.icon-form-url {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-url.png");
+        }
+        .icon.icon-form-tel {
+            width: 1.45rem;
+            height: 1.45rem;
+            background-image: url("/sui/img/i-form-tel.png");
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-group">
+    <div id="page-layout" class="page">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back" href="javascript:history.back(-1)" >
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <h1 class="title">登陆</h1>
+        </header>
+        <div class="content">
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">用户名</div>
+                                <div class="item-input">
+                                    <input type="text" title="用户名" required="required" id="userName" placeholder="Your user name">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-password"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">密码</div>
+                                <div class="item-input">
+                                    <input type="password" title="密码" required="required" id="passWord" placeholder="Password" class="">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="row">
+                    <div class="col-50"><a id="cancel" class="button button-big button-fill button-danger">取消</a></div>
+                    <div class="col-50"><a id="submit" class="button button-big button-fill button-success">登陆</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script th:src="@{/js/jquery/jquery.js}"></script>
+<script th:src="@{/sui/dist/js/zepto.js}"></script>
+<script th:src="@{/sui/dist/js/sm.js}"></script>
+<script th:src="@{/sui/dist/js/sm-extend.js}"></script>
+<script th:src="@{/js/vue.js}"></script>
+<script th:src="@{/js/validate.js}"></script>
+<script th:src="@{/js/layer/layer.js}"></script>
+<script>
+
+    $("#submit").click(function () {
+        if(!validate($("#userName").val(),"用户名",1,25))
+            return false;
+        if(!validate($("#passWord").val(),"密码",6,15))
+            return false;
+        var user = {};
+        user.userName = $("#userName").val();
+        user.passWord = $("#passWord").val();
+
+        $.post("/login",user,function(data){
+                if(data.code == 0){
+                    layer.msg(data.data);
+                    setTimeout(function () {
+                        window.location.href = "/index";
+                    },500);
+                }else{
+                    layer.msg(data.msg);
+                }
+        });
+    });
+
+    $("#cancel").click(function(){
+        history.go(-1);
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+	  lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>新增动态</title>
+	<link th:href="@{/layui/css/layui.css}" rel="stylesheet">
+	<style>
+		.file {
+			position: relative;
+			display: inline-block;
+			overflow: hidden;
+			text-decoration: none;
+			text-indent: 0;
+		}
+		.file input {
+			position: absolute;
+			font-size: 100px;
+			right: 0;
+			top: 0;
+			opacity: 0;
+		}
+	</style>
+</head>
+<body>
+
+<div style="width: 80%;margin: 0 auto">
+
+	<form class="layui-form">
+
+		<input type="layui-form" hidden name="id" id="dyid" style="display: none"/>
+
+		<div class="layui-form-item">
+			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+				<legend>发表动态</legend>
+			</fieldset>
+			<div class="layui-input-block">
+				<div class="layui-upload">
+					<a href="javascript:;" class="file layui-btn" id="imga" onmouseover="showTip('注意，点击会清空当前图片','imga')" onmouseleave="layer.closeAll('tips')"><span>上传图片</span>
+						<input id="img" type="file" name="img" multiple="multiple" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"/>
+					</a>
+					<blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+						预览图：
+						<div class="layui-upload-list" id="imgDiv"></div>
+					</blockquote>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">他人可见</label>
+			<div class="layui-input-block" id="switch_div">
+				<input type="checkbox" id="isEnable" name="switch" lay-skin="switch" lay-text="是|否" checked/>
+			</div>
+		</div>
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">动态内容</label>
+			<div class="layui-input-block">
+				<textarea id="demo" style="display: none;"></textarea>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
+				<button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+
+<script th:src="@{/js/core/core/jquery.3.2.1.min.js}"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/core/main.js}"></script>
+
+<script>
+
+	var ParentData;
+
+    function child(obj){
+        ParentData = obj;//获取父界面的传值
+    }
+
+    layui.use(['layedit','form','upload','layer'], function() {
+        var layedit = layui.layedit,
+            form = layui.form,
+            $ = layui.jquery,
+            layer = layui.layer,
+            upload = layui.upload;
+
+        var edit = editBuild();
+		/*初始化富文本框*/
+        function editBuild(){
+            var edit = layedit.build('demo', {
+                tool: [
+                    'strong' //加粗
+                    , 'italic' //斜体
+                    , 'underline' //下划线
+                    , 'del' //删除线
+
+                    , '|' //分割线
+
+                    , 'left' //左对齐
+                    , 'center' //居中对齐
+                    , 'right' //右对齐
+                    , 'link' //超链接
+                    , 'unlink' //清除链接
+                    , 'face' //表情
+                ]
+            }); //建立编辑器
+            return edit;
+        };
+
+        /*如果接收到的父窗口数据不为空就把内容赋值到富文本框*/
+        try{
+            if(ParentData){
+                layedit.setContent(edit,ParentData.dynamics.dynamicsMsg);
+			}
+		}catch (e){
+            console.log(e);
+		}
+
+        /*清空所有*/
+        $("#reset").click(function () {
+            layer.confirm('确定清空所有？', {
+                btn: ['清空','关闭'] //按钮
+            }, function(){
+                clear();
+                layer.msg("已清空",{icon:1});
+            });
+        });
+
+        /*图片上传点击时清空显示图片及文本*/
+        $("#img").on("click",function(){
+            $("#imgDiv").empty();
+            $(".file span").html("上传图片");
+            formData.delete("img");
+        })
+
+        /*选中图片后获取图片地址并显示*/
+        $("#img").on("change",function(){
+            formData.delete("img");
+            if(this.files.length <= 0){
+                $("#imgDiv").empty();
+                return false;
+            }
+            for(var i = 0; i < this.files.length; i++){
+                if(this.files[i] != null){
+                    if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(this.files[0].name)){
+                        this.value = "";
+                        layer.msg("上传文件必须为图片类型！");
+                        break;
+                    }
+                    $(".file span").html("共"+this.files.length+"个图片");
+                    var url = getImgUrl(this.files[i]);
+                    if(url){
+                        formData.append("img",this.files[i]);
+                        $("#imgDiv").append("<img style='width: 5rem;height: 5rem;' src='"+url+"'/>");
+                    }
+                }
+            }
+        });
+
+
+        /*要提交的数据*/
+        var formData = new FormData();
+
+        // 监听提交
+        form.on('submit(formSubmit)', function(data){
+            var dynamics_id = $("#dyid").val();
+            var text = layedit.getContent(edit);
+            if(text == '' || text.trim().length <= 0){
+                layer.msg("动态内容不能为空",{icon:2});
+                return false;
+			}
+            formData.delete("text");
+            formData.append("text",text);
+            formData.delete("isEnable");
+            if(data.field.switch){
+                formData.append("isEnable",'1');
+            }else{
+                formData.append("isEnable",'0');
+            };
+            /*如果没有ID就是新增*/
+            if(dynamics_id == '' || dynamics_id == null || dynamics_id.length <= 0){
+                layer.confirm('确定发布？', {
+                    btn: ['发布','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url:"/dynamics/submit",
+                        type:"POST",
+                        data:formData,
+                        contentType:false,
+                        processData:false,
+                        cache:false,
+                        dataType:"JSON",
+                        success:function(data){
+                            if(layerTip(data)){
+                                setTimeout(function () {
+                                    clear();
+                                },2000);
+                            }
+                            return true;
+                        },
+                        error:function () {
+                            layer.msg('连接异常');
+                            return false;
+                        }
+                    });
+                });
+            }else{
+                layer.confirm('确定修改？', {
+                    btn: ['修改','取消'] //按钮
+                }, function(){
+						formData.delete("dynamics_id");
+						formData.append("dynamics_id",dynamics_id);
+						$.ajax({
+                        url:"/admin/modify",
+                        type:"POST",
+                        data:formData,
+                        contentType:false,
+                        processData:false,
+                        cache:false,
+                        dataType:"JSON",
+                        success:function(data){
+                            if(layerTip(data)){
+                                setTimeout(function () {
+                                    clear();
+                                },2000);
+                            }
+                            return true;
+                        },
+                        error:function () {
+                            layer.msg('连接异常');
+                            return false;
+                        }
+                    });
+                });
+			}
+            return false;
+        });
+
+
+		/*关闭弹窗询问*/
+       /* $("#closeIframe").click(function () {
+            layer.confirm('确定关闭？', {
+                btn: ['关闭','取消'] //按钮
+            }, function(){
+               close();
+            });
+        });*/
+
+		/*关闭弹窗*/
+        /*function close(){
+            var i = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(i);
+		}*/
+
+        /*清空数据*/
+        function clear(){
+            $("#imgDiv").empty();
+            $(".file span").html("选择图片");
+            edit = editBuild();
+		}
+
+
+    });
+</script>
+</body>
+</html>

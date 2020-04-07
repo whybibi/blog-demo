@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>动态管理</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet">
+    <style>
+        .text_over{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden
+        }
+        .wrapper{
+            margin: 10px 10px;
+         }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <script type="text/html" id="toolbar_dynamic">
+        <div class="layui-btn-group">
+            <button class="layui-btn" lay-event="add">新增</button>
+            <button class="layui-btn  layui-btn-danger" lay-event="delete">批量删除</button>
+            <button class="layui-btn" lay-event="select" id="btn_query_dynamic">查询</button>
+        </div>
+    </script>
+    <table class="layui-hide" id="dynamic_table" lay-filter="dynamic_main"></table>
+    <script type="text/html" id="dynamic_table_bar">
+
+        {{#  if(d.dynamics.isDelete == '1'){ }}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        {{#  } else{ }}
+            <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="recover">恢复</a>
+        {{#  } }}
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+    </script>
+
+
+    <!--顶部边栏-->
+    <!--<div th:include="/iFrame/core_top_bar :: html"></div>-->
+    <!--左边栏-->
+    <!--<div th:include="/iFrame/core_silider_bar :: html"></div>-->
+    <!--右侧主panel-->
+    <!--<div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                &lt;!&ndash;<h4 class="page-title">动态管理</h4>&ndash;&gt;
+                <div class="row">
+                    &lt;!&ndash;列表&ndash;&gt;
+                    <div class="col-md-12">
+                        <div class="card card-tasks" id="dynamics_body">
+                            <div class="card-header ">
+                                <h4 class="card-title">动态</h4>
+                                <p class="card-category">用户发表动态列表</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <script type="text/html" id="toolbar_dynamic">
+                                        <div class="layui-btn-group">
+                                            <button class="layui-btn" lay-event="add">新增</button>
+                                            <button class="layui-btn  layui-btn-danger" lay-event="delete">批量删除</button>
+                                            <button class="layui-btn" lay-event="select" id="btn_query_dynamic">查询</button>
+                                        </div>
+                                    </script>
+                                    <table class="layui-hide" id="dynamic_table" lay-filter="dynamic_main"></table>
+                                    <script type="text/html" id="dynamic_table_bar">
+                                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                                        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+                                    </script>
+                                    &lt;!&ndash;<table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input  select-all-checkbox" type="checkbox" data-select="checkbox" data-target=".task-select" onchange="checkOrUnCheck(this);">
+                                                        <span class="form-check-sign"></span>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>动态内容</th>
+                                            <th>动态图片</th>
+                                            <th>发帖人</th>
+                                            <th>是否可见</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="hold in pageInfo.list" v-cloak>
+                                            <td>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input task-select dynamicsId" :value="hold.dynamics.id" type="checkbox">
+                                                        <span class="form-check-sign"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>{{hold.dynamics.dynamicsMsg}}</td>
+                                            <td><img v-for="img in hold.dynamicsImgList" :src="img.dynamicsImgUrl" style="width: 3rem;height: 3rem" onclick="showImg(this);"/></td>
+                                            <td>{{hold.user.userName}}</td>
+                                            <td>{{hold.dynamics.isEnable == 1 ? "他人可见" : "自己可见"}}</td>
+                                            <td class="td-actions text-right">
+                                                <div class="form-button-action">
+                                                    <button type="button" onclick="editDynamics(this);"  data-toggle="tooltip" class="btn btn-link btn-simple-primary">
+                                                        <i class="la la-edit" title="修改"></i>
+                                                    </button>
+                                                    <button type="button" onclick="delDynamics(this);" data-toggle="tooltip" class="btn btn-link btn-simple-danger">
+                                                        <i class="la la-times" title="删除"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>&ndash;&gt;
+                                </div>
+                            </div>
+                            &lt;!&ndash;<div class="card-footer ">
+                                <div class="card-body">
+                                    <p class="demo">
+                                    <div class="stats" style="float: left">
+                                        更新完毕
+                                    </div>
+                                    <ul class="pagination pg-primary" style="float: right" v-cloak>
+                                        <li class="page-item">
+                                            <a class="page-link" :url="'/admin/dynamics_list?pageNum='+pageInfo.prePage+''" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                                <span class="sr-only">前一页</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item active" v-for="num in pageInfo.pages" v-if="num==pageInfo.pageNum">
+                                            <a class="page-link" :url="'/admin/dynamics_list?pageNum='+num+''" >{{num}}</a>
+                                        </li>
+                                        <li class="page-item" v-else>
+                                            <a class="page-link" :url="'/admin/dynamics_list?pageNum='+num+''">{{num}}</a>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <a class="page-link" :url="'/admin/dynamics_list?pageNum='+pageInfo.nextPage+''" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <span class="sr-only">下一页</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="page-item" style="float: right;margin-right: 3%">
+                                        <select class="page-item" id="pageSize">
+                                            <option checked>10</option>
+                                            <option>20</option>
+                                            <option>30</option>
+                                        </select>
+                                    </div>
+                                    </p>
+                                </div>
+                            </div>&ndash;&gt;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        &lt;!&ndash;底部栏&ndash;&gt;
+        &lt;!&ndash;<div th:include="/iFrame/core_footer_bar :: html"></div>&ndash;&gt;
+    </div>-->
+</div>
+</div>
+<script th:src="@{/js/core/core/jquery.3.2.1.min.js}"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/core/main.js}"></script>
+<script th:inline="none">
+   /* /!*修改角色点击事件*!/
+    function editDynamics(obj){
+        var id = $(obj).parents("tr").find(".dynamicsId").val();
+        $("#modalUpdate").modal("show");
+    }
+
+    /!*删除角色点击事件*!/
+    function delDynamics(obj){
+        var id = $(obj).parents("tr").find(".dynamicsId").val();
+        layer.msg('确定删除此条动态吗？', {
+            time: 0 //不自动关闭
+            ,btn: ['删除', '不删除']
+            ,yes: function(index){
+                layer.close(index);
+                /!*假装删除成功*!/
+                layer.msg(name+'删除成功');
+                $(obj).parents("tr").hide();
+            }
+            ,no:function(index){
+                layer.close(index);
+            }
+        });
+    }
+
+    /!*选中全部复选框或取消全部*!/
+    function checkOrUnCheck(obj){
+        if ($(obj).is(":checked")) {//$(this).prop("checked")
+            $(".form-check-label input[type='checkbox']").prop("checked", true);
+        } else {
+            $(".form-check-label input[type='checkbox']").prop("checked", false);
+        }
+    }
+
+    $(function () {
+
+        var vue = null;
+        /!*加载动态列表*!/
+        loadDynamicsList();
+        function loadDynamicsList(){
+            $.get("/admin/dynamics_list",function(data){
+                if(data.success){
+                    console.log(data);
+                    vue = new Vue({
+                        el:"#dynamics_body",
+                        data:{pageInfo:data.pageInfo},
+                    });
+                }
+            });
+            /!*一分钟后显示多久前更新的列表*!/
+            setTimeout(function () {
+                var i = 1;
+                setInterval(function () {
+                    i++;
+                    $(".card-footer .stats").html(i+"分钟前更新");
+                },60000);
+            },60000);
+        }
+
+
+        /!*分页点击查询数据*!/
+        $("body").delegate(".page-link","click", function(){
+            console.log($("#pageSize").val());
+            console.log($(this).attr("url")+"&pageSize="+$("#pageSize").val());
+            $.get($(this).attr("url")+"&pageSize="+$("#pageSize").val(),function (data) {
+                if (data.success) {
+                    console.log(data);
+                    vue.pageInfo = data.pageInfo;
+                }
+            });
+            $("#dynamics_body tr").show();
+            $(".card-footer .stats").html("更新完毕");
+            /!*一分钟后显示多久前更新的列表*!/
+            setTimeout(function () {
+                var i = 1;
+                setInterval(function () {
+                    i++;
+                    $(".card-footer .stats").html(i+"分钟前更新");
+                },60000);
+            },60000);
+        });
+
+
+
+        /!*添加侧边栏active*!/
+        $(".nav-item").removeClass("active");
+        $(".nav .nav-item").eq(2).addClass("active");
+    });*/
+   layui.use(['table','form','layer'],function () {
+
+       var table = layui.table,
+           form = layui.form,
+           layer = layui.layer;
+
+       var tableInit = init_table();
+
+       function init_table(){
+         var tableInit =  table.render({
+             elem: '#dynamic_table'
+             ,url:'/admin/dynamics_list'
+             ,cellMinWidth: 110
+             ,page: true
+             ,toolbar:'#toolbar_dynamic'
+             ,cols: [[
+                 {type: 'checkbox', fixed: 'left'}
+                 ,{field:'dynamics', title:'ID', width:80, unresize: true, sort: true, fixed: 'left',templet:function (d) {
+                         return d.dynamics.id;
+                     }}
+                 ,{field:'dynamics', title:'动态内容',width:'30%',templet:function (d) {
+                         return d.dynamics.dynamicsMsg;
+                     }}
+                 ,{field:'dynamicsImgList', title:'动态图片',width:'20%',align:'center',templet:function (d) {
+                     var img = '';
+                     if(d.dynamicsImgList != '' && d.dynamicsImgList.length > 0){
+                         for(var i = 0; i < d.dynamicsImgList.length; i++){
+                             img += '<img src="'+d.dynamicsImgList[i].dynamicsImgUrl+'" style="width: 2rem;height: 2rem" onclick="showImg(this);"/>';
+                         }
+                         return img;
+                     }else{
+                         return "暂无图片";
+                     }
+                 }}
+                 ,{field:'user', title:'发帖人',width:'10%',templet:function (d) {
+                         return d.user.userName;
+                     }}
+                 ,{field:'dynamics', title:'发帖时间',width:'15%',templet:'<div>{{ Format(d.dynamics.createDate,"yyyy-MM-dd hh:mm:ss")}}</div>'}
+                 ,{field:'dynamics', title: '他人是否可见',width:'15%',align: 'center',templet:function (d) {
+                         if (d.dynamics.isEnable == 1) {
+                             return '<input type="checkbox" name="switch" lay-skin="switch" data-id="' + d.dynamics.id + '" lay-filter="switchEnable" lay-text="他人可见|自己可见" checked/>';
+                         } else {
+                             return '<input type="checkbox" name="switch" lay-skin="switch" data-id="' + d.dynamics.id + '" lay-filter="switchEnable" lay-text="他人可见|自己可见"/>';
+                         }
+                     }}
+                 , {fixed: 'right', title: '操作', width: "150", align: 'center', unresize:'true',toolbar: '#dynamic_table_bar'}
+             ]]
+         });
+         return tableInit;
+       }
+
+       //监听头工具栏事件
+       table.on('toolbar(dynamic_main)', function(obj){
+           var checkStatus = table.checkStatus(obj.config.id)
+               ,data = checkStatus.data; //获取选中的数据
+           switch(obj.event){
+               case 'add':
+                   open();
+                   break;
+               case 'delete':
+                   if(data.length === 0){
+                       layer.msg('请至少选择一行');
+                   } else {
+                       layer.confirm('确定删除选中的动态？', {
+                           btn: ['删除','不删除'] //按钮
+                       }, function(){
+                           layer.msg('删除了(仅测试，未实现删除)', {icon: 1});
+                       }, function(){});
+                   }
+                   break;
+               case 'select':
+                   $(".layui-laypage-btn").click();
+                   break;
+           };
+       });
+
+        /*初始化打开新增编辑弹窗*/
+       function open(data){
+           var index = layer.open({
+               title : "添加动态",
+               type : 2,
+               area: ['90%', '90%'],
+               content : "/admin/dynamics_edit.html",
+               success : function(layero, index){
+                   if(data){
+                       console.log(data);
+                       var body = layer.getChildFrame('body', index);
+                       body.find("#dyid").val(data.dynamics.id);
+                       try{
+                           for(var i = 0; i <= data.dynamicsImgList.length; i++){
+                               if(data.dynamicsImgList[i].dynamicsImgUrl){
+                                   body.find("#imgDiv").append("<img style='width: 5rem;height: 5rem;' src='"+data.dynamicsImgList[i].dynamicsImgUrl+"'/>");
+                               }
+                           }
+                       }catch (e){
+                           console.log(e);
+                       }
+                       if(data.dynamics.isEnable != 1){
+                           var switch_div = body.find("#switch_div");
+                           body.find("#isEnable").attr('checked', null);
+                           switch_div.find("div").prop('class','layui-unselect layui-form-switch');
+                           switch_div.find("em").text("否");
+                           form.render();
+                       }
+                       /*把当前获取到的内容传给iframe子页面*/
+                       var iframe = window['layui-layer-iframe' + index];
+                       iframe.child(data);
+                   }
+                   setTimeout(function(){
+                       layer.tips('点击此处返回文章列表', '.layui-layer-setwin .layui-layer-close', {
+                           tips: 3
+                       });
+                   },500)
+               },cancel: function(){//右上角关闭回调
+                   index = null;
+                   init_table();
+               }
+           });
+           layer.full(index);
+           //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+           $(window).on("resize",function(){
+               if(index){
+                   layer.full(index);
+               }
+           });
+       }
+
+
+       //监听行工具事件
+       table.on('tool(dynamic_main)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+           var data = obj.data //获得当前行数据
+               ,layEvent = obj.event; //获得 lay-event 对应的值
+           if(layEvent === 'del'){//删除动态
+               layer.msg('确认要删除ID为'+data.dynamics.id+'的动态吗？', {
+                   time: 0 //不自动关闭
+                   ,btn: ['删除', '不删除']
+                   ,yes: function(index){
+                       $.post("/admin/delete",{id: data.dynamics.id},
+                           function (data) {
+                               if(layerTip(data)){/*obj.del();*/$(".layui-laypage-btn").click();}
+                           }
+                       );
+                       layer.close(index);
+                   }
+               });
+           }else if(layEvent === 'edit'){//修改动态
+                open(data);
+           }else if(layEvent === 'recover'){//恢复删除动态
+               layer.msg('确认要恢复ID为'+data.dynamics.id+'的动态吗？', {
+                   time: 0 //不自动关闭
+                   ,btn: ['恢复', '不恢复']
+                   ,yes: function(index){
+                       $.post("/admin/recover",{id: data.dynamics.id},
+                           function (data) {
+                               if(layerTip(data)){
+                                   $(".layui-laypage-btn").click();
+                               }
+                           }
+                       );
+                       layer.close(index);
+                   }
+               });
+           }
+       });
+
+
+       //更改是否可用
+       form.on('switch(switchEnable)', function(data){
+           var id = $(this).attr('data-id');
+           var isEnable = data.elem.checked;
+           isEnable = (isEnable == false) ? 0 : 1;
+           $.ajax({
+               type:"post",
+               url:"/dynamics/update_dynamics_status",
+               data:{id : id, isEnable : isEnable},
+               dataType:"json",
+               success:function (data) {
+                   layerTip(data);
+               },
+               error:function (e) {
+                   layer.msg("连接失败");
+                   console.log(e);
+               }
+           });
+       });
+
+   /*layui结束*/
+   });
+</script>
+</body>
+</html>

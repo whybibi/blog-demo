@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>主页</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link th:href="@{/sui/dist/css/sm.css}" rel="stylesheet">
+    <link th:href="@{/sui/dist/css/sm-extend.css}" rel="stylesheet">
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet">
+
+    <style>
+        /*解决侧滑侧边栏报错错误*/
+        * { touch-action: pan-y; }
+        .head_img{
+            width: 60%;
+            height: 60%;
+        }
+        /*vue加载完成前不显示*/
+        [v-cloak] {
+            display: none !important;
+        }
+        /*表情图片和文本一行显示*/
+        .facebook-card .card-content-inner img{
+            display: inline;
+        }
+        .layui-flow-more{
+            margin: 20px 0;
+        }
+        .comment_login_p{
+            font-size: 1rem;
+            font-family: 微软雅黑;
+        }
+        #comment_popup p{
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page-group">
+    <div id="page-nav-bar" class="page">
+        <header class="bar bar-nav">
+            <shiro:authenticated><a href="javascript:;" class="button button-link button-nav pull-left open-panel icon-user" data-panel='#panel-left'>菜单</a></shiro:authenticated>
+            <h1 class="title">首页</h1>
+        </header>
+        <nav class="bar bar-tab">
+            <a class="tab-item external active" href="/">
+                <span class="icon icon-home"></span>
+                <span class="tab-label">主页</span>
+            </a>
+            <shiro:notAuthenticated>
+                <a class="tab-item external" href="/basic_user/register_user">
+                    <span class="icon icon-card"></span>
+                    <span class="tab-label">注册</span>
+                </a>
+            </shiro:notAuthenticated>
+            <shiro:authenticated>
+                <a class="tab-item external" href="/email">
+                    <span class="icon icon-message"></span>
+                    <span class="tab-label">消息</span>
+                    <span class="badge">1</span>
+                </a>
+            </shiro:authenticated>
+            <shiro:notAuthenticated>
+                <a class="tab-item external" href="/login">
+                    <span class="icon icon-me"></span>
+                    <span class="tab-label">登陆</span>
+                </a>
+            </shiro:notAuthenticated>
+            <shiro:authenticated>
+                <a class="tab-item external" href="/my">
+                    <span class="icon icon-app"></span>
+                    <span class="tab-label">我的</span>
+                </a>
+            </shiro:authenticated>
+        </nav>
+        <div class="content" id="facebook_content">
+            <div class="content-block-title">最新内容</div>
+
+            <!--<div class="card facebook-card" v-for="holder in dynamicsList">
+                <div class="card-header no-border">
+                    <div class="facebook-avatar"><img :src="holder.user.headImg" width="34" height="34"></div>
+                    <div class="facebook-name">{{holder.user.userName}}</div>
+                    <div class="facebook-date">{{holder.dynamics.createDate}}</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-content-inner" v-html="holder.dynamics.dynamicsMsg">&lt;!&ndash;{{holder.dynamics.dynamicsMsg}}&ndash;&gt;</div>
+                    <a href=""><img v-for=" img in holder.dynamicsImgList" :src="img.dynamicsImgUrl" width="100%"></a>
+                </div>
+                <div class="card-footer no-border">
+                    <a href="#" class="link">赞</a>
+                    <a onclick="comment();" class="link">评论</a>
+                    <a href="#" class="link">分享</a>
+                </div>
+            </div>-->
+
+
+           <!-- <div class="card facebook-card">
+                <div class="card-header no-border">
+                    <div class="facebook-avatar"><img src="https://img1.gtimg.com/rcdimg/20190426/08/5334181890_273x145.jpg" width="34" height="34"></div>
+                    <div class="facebook-name">我是骗子</div>
+                    <div class="facebook-date">星期一 3:47pm</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-content-inner">把马克龙骗了真高兴</div>
+                    <a href="/#index-inner"><img src="https://img1.gtimg.com/rcdimg/20190426/08/3156562645_273x145.jpg" width="100%"></a>
+                </div>
+                <div class="card-footer no-border">
+                        <a href="#" class="link">赞</a>
+                        <a onclick="comment();" class="link">评论</a>
+                        <a href="#" class="link">分享</a>
+                    </div>
+            </div>
+
+            <div class="card facebook-card">
+                    <div class="card-header no-border">
+                        <div class="facebook-avatar"><img src="https://img1.gtimg.com/rcdimg/20190426/08/4400463489_273x145.jpg" width="34" height="34"></div>
+                        <div class="facebook-name">马克龙</div>
+                        <div class="facebook-date">星期一 3:47pm</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-content-inner">竟然被骗了！苦中作乐</div>
+                        <img src="https://img1.gtimg.com/rcdimg/20190426/08/4400463489_273x145.jpg" width="100%">
+                    </div>
+                    <div class="card-footer no-border">
+                        <a href="#" class="link">赞</a>
+                        <a href="#" class="link">评论</a>
+                        <a href="#" class="link">分享</a>
+                    </div>
+                </div>
+
+            <div class="card facebook-card">
+                <div class="card-header no-border">
+                    <div class="facebook-avatar"><img src="https://inews.gtimg.com/newsapp_bt/0/8707751258/1000" width="34" height="34"></div>
+                    <div class="facebook-name">官房长官菅义伟</div>
+                    <div class="facebook-date">星期五 3:47pm</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-content-inner">日本新年号令和！</div>
+                    <img src="https://inews.gtimg.com/newsapp_bt/0/8707751258/1000" width="100%">
+                </div>
+                <div class="card-footer no-border">
+                    <a href="#" class="link">赞</a>
+                    <a href="#" class="link">评论</a>
+                    <a href="#" class="link">分享</a>
+                </div>
+            </div>
+
+            <div class="card facebook-card">
+                <div class="card-header no-border">
+                    <div class="facebook-avatar"><img src="https://inews.gtimg.com/newsapp_bt/0/8707751259/1000" width="34" height="34"></div>
+                    <div class="facebook-name">美图分享</div>
+                    <div class="facebook-date">星期三 3:47pm</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-content-inner">其他</div>
+                    <img src="https://inews.gtimg.com/newsapp_bt/0/8707751259/1000" width="100%">
+                </div>
+                <div class="card-footer no-border">
+                    <a href="#" class="link">赞</a>
+                    <a href="#" class="link">评论</a>
+                    <a href="#" class="link">分享</a>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <p><a href="javascript:;" class="open-popup" data-popup=".popup-about">打开 about 弹层</a></p>
+                <p><a href="javascript:;" class="open-popup" data-popup=".popup-services">打开 service 弹层</a></p>
+            </div>
+-->
+        </div>
+    </div>
+
+
+
+    <!--外部附件-->
+    <!--内联page-->
+    <div class="page" id="index-inner">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back" data-transition='slide-out'>
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <h1 class="title">图片详情</h1>
+        </header>
+        <div class="content">
+            添加相应内容
+            <div class="card-content"><img src="https://img1.gtimg.com/rcdimg/20190426/08/5334181890_273x145.jpg" width="100%"></div>
+        </div>
+    </div>
+    <!-- About底部全屏 弹窗 -->
+    <div class="popup popup-about">
+        <div class="content-block">
+            <p>About</p>
+            <p><a href="javascript:;" class="close-popup">Close popup</a></p>
+            <p>Lorem ipsum dolor ...</p>
+        </div>
+    </div>
+    <!-- 底部弹出全屏页面 -->
+    <div class="popup popup-services">
+        <div class="content-block">
+            <h3 style="font-weight: bold">评论详情</h3>
+            <div id="comment_popup">
+
+            </div>
+            <shiro:authenticated>
+                <div>
+                    <input id="comment_dynamic_id" style="display: none" hidden="hidden"/>
+                    <textarea id="comment_msg" placeholder="请输入评论内容" class="layui-textarea"></textarea>
+                    <p style="margin-top: 1rem"><a class="layui-btn layui-btn-fluid layui-btn-normal" id="submit_comment">提交评论</a></p>
+                </div>
+            </shiro:authenticated>
+            <p style="margin-top: 10%"><a href="javascript:;" class="layui-btn layui-btn-fluid layui-btn-danger close-popup">关闭</a></p>
+        </div>
+    </div>
+
+    <div class="panel-overlay"></div>
+    <!--左侧侧滑页面 -->
+    <shiro:authenticated><!--登陆后才能打开-->
+        <div class="panel panel-left panel-reveal theme-dark" id='panel-left'>
+            <div class="content-block">
+                <p><img class="head_img" th:src="${session.userSession.headImg}"/></p>
+                <p><span style="color: gray; font-size: 1.5rem" th:text="${session.userSession.userName}"></span>下午好</p>
+                <p>我的好友</p>
+                <p><a href="#index-inner">测试页面</a></p>
+                <p><a href="/logout">退出登陆</a></p>
+                <p><a href="javascript:;" class="close-panel">关闭</a></p>
+            </div>
+        </div>
+    </shiro:authenticated>
+
+</div>
+
+
+
+<script th:src="@{/js/jquery/jquery.js}"></script>
+<script th:src="@{/sui/dist/js/zepto.js}"></script>
+<script th:src="@{/sui/dist/js/sm.js}"></script>
+<script th:src="@{/sui/dist/js/sm-extend.js}"></script>
+<!--<script th:src="@{/js/vue.js}"></script>-->
+<!--<script th:src="@{/js/validate.js}"></script>-->
+<!--<script th:src="@{/js/basic/index.js}"></script>-->
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/basic/load.js}"></script>
+<script th:src="@{/js/core/main.js}"></script>
+
+</body>
+</html>

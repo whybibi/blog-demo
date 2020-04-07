@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>主页</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link th:href="@{/sui/dist/css/sm.css}" rel="stylesheet">
+    <link th:href="@{/sui/dist/css/sm-extend.css}" rel="stylesheet">
+    <style>
+        * { touch-action: pan-y; }
+    </style>
+</head>
+<body>
+<div class="page-group">
+    <div class="page page-current" id='routers-step-2'>
+        <header class="bar bar-nav">
+            <a href="javascript:;" class="button button-link button-nav pull-left open-panel icon-user" data-panel='#panel-left-demo'>菜单</a>
+            <h1 class="title">路由 Demo 页面 B</h1>
+        </header>
+        <div class="content">
+            <div class="content-block">
+                <p><a href="javascript:;" class="open-panel" data-panel='#panel-left-demo'>打开左侧栏</a></p>
+                <p><a href="javascript:;" class="open-popup" data-popup=".popup-about">打开 about 弹层</a></p>
+                <p><a href="javascript:;" class="open-popup" data-popup=".popup-services">打开 service 弹层</a></p>
+            </div>
+            <span class="icon icon-star">icon-star</span>
+            <span class="icon icon-app">icon-app</span>
+            <span class="icon icon-browser">icon-browser</span>
+            <span class="icon icon-card">icon-card</span>
+            <span class="icon icon-cart">icon-cart</span>
+            <span class="icon icon-code">icon-code</span>
+            <span class="icon icon-computer">icon-computer</span>
+            <span class="icon icon-remove">icon-remove</span>
+            <span class="icon icon-download">icon-download</span>
+            <span class="icon icon-edit">icon-edit</span>
+            <span class="icon icon-emoji">icon-emoji</span>
+            <span class="icon icon-friends">icon-friends</span>
+            <span class="icon icon-gift">icon-gift</span>
+            <span class="icon icon-phone">icon-phone</span>
+            <span class="icon icon-clock">icon-clock</span>
+            <span class="icon icon-home">icon-home</span>
+            <span class="icon icon-menu">icon-menu</span>
+            <span class="icon icon-message">icon-message</span>
+            <span class="icon icon-me">icon-me</span>
+            <span class="icon icon-picture">icon-picture</span>
+            <span class="icon icon-share">icon-share</span>
+            <span class="icon icon-settings">icon-settings</span>
+            <span class="icon icon-refresh">icon-refresh</span>
+            <span class="icon icon-caret">icon-caret</span>
+            <span class="icon icon-down">icon-down</span>
+            <span class="icon icon-up">icon-up</span>
+            <span class="icon icon-up">icon-up</span>
+            <span class="icon icon-left">icon-left</span>
+            <span class="icon icon-check">icon-check</span>
+            <span class="icon icon-search">icon-search</span>
+            <span class="icon icon-new">icon-new</span>
+            <span class="icon icon-prev">icon-prev</span>
+            <span class="icon icon-next">icon-next</span>
+        </div>
+    </div>
+
+
+    <!-- About底部全屏弹窗 -->
+    <div class="popup popup-about">
+        <div class="content-block">
+            <p>About</p>
+            <p><a href="javascript:;" class="close-popup">Close popup</a></p>
+            <p>Lorem ipsum dolor ...</p>
+        </div>
+    </div>
+    <!-- 底部弹出全屏页面 -->
+    <div class="popup popup-services">
+        <div class="content-block">
+            <p>弹窗</p>
+            <p><a href="javascript:;" class="close-popup">关闭弹窗</a></p>
+            <p>弹窗</p>
+        </div>
+    </div>
+
+    <div class="panel-overlay"></div>
+    <!--左侧侧滑页面 -->
+    <div class="panel panel-left panel-reveal theme-white" id='panel-left-demo'>
+        <div class="content-block">
+            <p>下午好<span style="color: gray; font-size: 19px">why</span></p>
+            <p>用户设置</p>
+            <p>我的帖子</p>
+            <p>我的留言</p>
+            <p>我的好友</p>
+            <p><a href="#routers-step-2-inner">路由 Demo 页面 B 内联 page</a></p>
+            <p><a href="javascript:;" class="close-panel">关闭</a></p>
+        </div>
+    </div>
+
+
+</div>
+<script th:src="@{/sui/dist/js/zepto.js}"></script>
+<script th:src="@{/sui/dist/js/sm.js}"></script>
+<script th:src="@{/sui/dist/js/sm-extend.js}"></script>
+</body>
+</html>

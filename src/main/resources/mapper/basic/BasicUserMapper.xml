@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.why.blog.basic.mapper.BasicUserMapper">
+
+    <sql id="Base_Column_List">
+        id,
+        user_name,
+        pass_word,
+        salt,
+        birthday,
+        sex,
+        real_name,
+        phone,
+        email,
+        description,
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        is_delete,
+        is_enable,
+        head_img
+    </sql>
+
+    <sql id="Table_Name">
+        basic_user
+    </sql>
+
+    <resultMap type="cn.why.blog.basic.entity.BasicUser" id="baseMap">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="passWord" column="pass_word"/>
+        <result property="salt" column="salt"/>
+        <result property="birthday" column="birthday"/>
+        <result property="sex" column="sex"/>
+        <result property="realName" column="real_name"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="description" column="description"/>
+        <result property="headImg" column="head_img"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="isEnable" column="is_enable"/>
+    </resultMap>
+
+    <select id="getUserById" parameterType="java.lang.Long" resultMap="baseMap">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM
+          <include refid="Table_Name"/>
+        WHERE
+          id = #{id}
+    </select>
+
+</mapper>

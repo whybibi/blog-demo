@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+	  lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>首页</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link th:href="@{/layui/css/layui.css}" rel="stylesheet">
+	<link th:href="@{/admin/css/public.css}" rel="stylesheet">
+</head>
+<body class="childrenBody">
+	<blockquote class="layui-elem-quote layui-bg-green">
+		<div id="nowTime"></div>
+	</blockquote>
+	<div class="layui-row layui-col-space10 panel_box">
+		<div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+			<a href="javascript:;" data-url="/admin/dynamics.html">
+				<div class="panel_icon layui-bg-green">
+					<i class="layui-icon layui-anim seraph layui-icon-read"></i>
+				</div>
+				<div class="panel_word">
+					<span>新动态</span>
+					<em>100+</em>
+					<cite class="layui-hide">动态管理</cite>
+				</div>
+			</a>
+		</div>
+		<div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+			<a href="javascript:;" data-url="" target="_blank">
+				<div class="panel_icon layui-bg-black">
+					<i class="layui-anim layui-icon seraph layui-icon-dialogue"></i>
+				</div>
+				<div class="panel_word">
+					<span>新评论</span>
+					<em>30</em>
+					<cite class="layui-hide">评论管理</cite>
+				</div>
+			</a>
+		</div>
+		<div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+			<a href="javascript:;" data-url="/admin/user.html">
+				<div class="panel_icon layui-bg-orange">
+					<i class="layui-anim layui-icon seraph layui-icon-username" data-icon="icon-icon10"></i>
+				</div>
+				<div class="panel_word userAll">
+					<span>新用户</span>
+					<em>10</em>
+					<cite class="layui-hide">用户中心</cite>
+				</div>
+			</a>
+		</div>
+		<div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+			<a href="javascript:;" data-url="" target="_blank">
+				<div class="panel_icon layui-bg-red">
+					<i class="layui-anim seraph icon-oschina"></i>
+				</div>
+				<div class="panel_word">
+					<span>保留</span>
+					<em>保留</em>
+					<cite class="layui-hide">测试</cite>
+				</div>
+			</a>
+		</div>
+		<div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+			<a href="javascript:;" data-url="">
+				<div class="panel_icon layui-bg-cyan">
+					<i class="layui-anim layui-icon" data-icon="&#xe857;">&#xe857;</i>
+				</div>
+				<div class="panel_word outIcons">
+					<span>保留</span>
+					<em>保留</em>
+					<cite class="layui-hide">保留</cite>
+				</div>
+			</a>
+		</div>
+		<div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+			<a href="javascript:;">
+				<div class="panel_icon layui-bg-blue">
+					<i class="layui-anim layui-icon seraph layui-icon-vercode"></i>
+				</div>
+				<div class="panel_word">
+					<span class="loginTime" th:text="${#dates.format(session.userSession.LastLoginTime,'yyyy-MM-dd hh:mm:ss')}"></span>
+					<cite>上次登录时间</cite>
+				</div>
+			</a>
+		</div>
+	</div>
+	<script th:src="@{/js/core/core/jquery.3.2.1.min.js}"></script>
+	<script th:src="@{/layui/layui.js}"></script>
+	<script th:src="@{/admin/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>侧边栏</title>
+</head>
+<body>
+<div class="sidebar" id="panel-left">
+    <div class="scrollbar-inner sidebar-wrapper">
+        <div class="user">
+            <div class="photo">
+                <img th:src="${session.userSession.headImg}">
+            </div>
+            <div class="info">
+                <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+								<span>
+                                    <span th:text="${session.userSession.userName}"></span>
+									<span class="user-level" th:text="${session.userSession.realName}"></span>
+									<span class="caret"></span>
+								</span>
+                </a>
+                <div class="clearfix"></div>
+
+                <div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+                    <ul class="nav">
+                        <li>
+                            <a href="">
+                                <span class="link-collapse">浏览</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span class="link-collapse">修改个人信息</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span class="link-collapse">设置</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="nav">
+            <li class="nav-item active">
+                <a href="/admin/index.html">
+                    <i class="la la-dashboard"></i>
+                    <p>主界面</p>
+                    <span class="badge badge-count">5</span>
+                </a>
+            </li>
+            <shiro:hasPermission name="user:view">
+            <li class="nav-item">
+                <a href="/admin/user.html">
+                    <i class="la la-user"></i>
+                    <p>用户管理</p>
+                    <span class="badge badge-count">14</span>
+                </a>
+            </li>
+            </shiro:hasPermission>
+            <li class="nav-item">
+                <a href="/admin/dynamics.html">
+                    <i class="la la-keyboard-o"></i>
+                    <p>动态管理</p>
+                    <span class="badge badge-count">50</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="">
+                    <i class="la la-comments"></i>
+                    <p>评论管理</p>
+                    <span class="badge badge-count">6</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/role.html">
+                    <i class="la la-key"></i>
+                    <p>权限管理</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="">
+                    <i class="la la-font"></i>
+                    <p>邮件管理</p>
+                    <span class="badge badge-danger">25</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/icon.html">
+                    <i class="la la-fonticons"></i>
+                    <p>字体图标</p>
+                </a>
+            </li>
+            <li class="nav-item update-pro">
+                <button  data-toggle="modal" data-target="#modalUpdate">
+                    <i class="la la-hand-pointer-o"></i>
+                    <p>测试保留</p>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

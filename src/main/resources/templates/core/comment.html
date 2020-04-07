@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      lang="zh">
+<head>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet">
+    <style>
+        .text_over{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden
+        }
+        .wrapper{
+            margin: 10px 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <script type="text/html" id="toolbar_comment">
+        <div class="layui-btn-group">
+            <button class="layui-btn" lay-event="refresh">刷新</button>
+        </div>
+    </script>
+    <table class="layui-hide" id="comment_table" lay-filter="comment_main"></table>
+    <script type="text/html" id="comment_table_bar">
+        {{#  if(d.isDelete == '1'){ }}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        {{#  } else{ }}
+        <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="recover">恢复</a>
+        {{#  } }}
+    </script>
+
+</div>
+<script th:src="@{/js/core/core/jquery.3.2.1.min.js}"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/core/main.js}"></script>
+<script th:inline="none">
+
+    layui.use(['table','layer','form'],function () {
+
+        var table = layui.table,
+            form = layui.form,
+            layer = layui.layer;
+
+        var tableInit = init_table();
+
+        function init_table() {
+            var tableInit = table.render({
+                elem: '#comment_table'
+                , url: '/admin/comment_list'
+                , method: 'post'
+                , cellMinWidth: 110
+                , page: true
+                , toolbar: '#toolbar_comment'
+                , cols: [[
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field:'dynamics', title:'所属动态', width:'20%', unresize: true, fixed: 'left',templet:"<div>{{d.dynamics.dynamicsMsg}}</div>"}
+                    ,{field:'user', title:'评论用户名',width:'15%',templet:"<div>{{d.user.userName}}</div>"}
+                    ,{field:'commentMsg', title:'评论内容',edit:'text',width:'30%'}
+                    ,{field:'createDate', title:'创建日期',width:'15%',align:'center',templet: '<div>{{ Format(d.createDate,"yyyy-MM-dd hh:mm:ss")}}</div>'}
+                    ,{field:'isEnable', title: '是否可见',templet:function (d) {
+                            if (d.isEnable == 1) {
+                                return '<input type="checkbox" name="switch" lay-skin="switch" data-id="' + d.id + '" lay-filter="switchEnable" lay-text="是|否" checked/>';
+                            } else {
+                                return '<input type="checkbox" name="switch" lay-skin="switch" data-id="' + d.id + '" lay-filter="switchEnable" lay-text="是|否"/>';
+                            }
+                        }}
+                    , {fixed: 'right', title: '操作', width: "120", align: 'center', unresize:'true',toolbar: '#comment_table_bar'}
+                ]]
+            });
+        }
+
+
+        //监听头工具栏事件
+        table.on('toolbar(comment_main)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id)
+                , data = checkStatus.data; //获取选中的数据
+            switch (obj.event) {
+                case 'refresh'://刷新
+                    $(".layui-laypage-btn").click();
+                    break;
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(comment_main)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'del'){//删除动态
+                layer.msg('确认要删除此评论吗？', {
+                    time: 0 //不自动关闭
+                    ,btn: ['删除', '不删除']
+                    ,yes: function(index){
+                        $.post("/admin/del_comment",{id:data.id},
+                            function (data) {
+                                if(layerTip(data)){$(".layui-laypage-btn").click();}
+                            }
+                        );
+                        layer.close(index);
+                    }
+                });
+            }else if(layEvent === 'recover'){//恢复
+                layer.msg('确认要恢复此评论吗？', {
+                    time: 0 //不自动关闭
+                    ,btn: ['恢复', '不恢复']
+                    ,yes: function(index){
+                        $.post("/admin/recover_comment",{id:data.id},
+                            function (data) {
+                                if(layerTip(data)){$(".layui-laypage-btn").click();}
+                            }
+                        );
+                        layer.close(index);
+                    }
+                });
+            }
+        });
+
+
+
+        //监听单元格编辑
+        table.on('edit(comment_main)', function(obj){
+            layer.msg('确定修改？', {
+                time: 0 //不自动关闭
+                ,btn: ['修改', '不修改']
+                ,yes: function(index){
+                    layer.close(index);
+                    var value = obj.value //得到修改后的值
+                        ,data = obj.data //得到所在行所有键值
+                        ,field = obj.field; //得到字段
+                    var params = {};
+                    params['id'] = data.id;
+                    params[field] = value;
+                    $.post("/admin/update_comment",params,function (data) {
+                        layerTip(data);
+                    });
+                }
+            });
+        });
+
+
+        //更改是否可用
+        form.on('switch(switchEnable)', function(data){
+            var id = $(this).attr('data-id');
+            var isEnable = data.elem.checked;
+            isEnable = (isEnable == false) ? 0 : 1;
+            $.ajax({
+                type:"post",
+                url:"/admin/update_comment_status",
+                data:{id : id, isEnable : isEnable},
+                dataType:"json",
+                success:function (data) {
+                    if(data.code==0){
+                        layer.msg( isEnable == 1 ?"评论可见" : "评论不可见");
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function (e) {
+                    layer.msg("连接失败");
+                    console.log(e);
+                }
+            });
+        });
+
+
+
+        /*layui结束*/
+    });
+
+</script>
+
+</body>
+</html>

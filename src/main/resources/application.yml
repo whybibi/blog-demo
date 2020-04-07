@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123
+  mybatis:
+    mapper-locations: classpath*:mapper/*/*.xml
+    type-aliases-package: cn.why.blog.*.entity
+    type-enums-package: cn.why.blog.*.entity.enums
+  thymeleaf:
+    mode: HTML5
+    suffix: .html
+    prefix: classpath:/templates/
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 10
+        max-wait: -1
+        max-idle: 10
+        min-idle: 0
+    timeout: 1000
+servlet:
+  multipart:
+    max-file-size: 5MB
+    max-request-size: 10MB
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: true
+  params: count=countSql
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*/*.xml
+  type-aliases-package: cn.why.blog.*.entity
+  type-enums-package: cn.why.blog.*.entity.enums
+

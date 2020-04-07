@@ -1,0 +1,101 @@
+{
+	"contentManagement": [
+		{
+			"title": "动态列表",
+			"icon": "layui-icon layui-icon-chat",
+			"href": "/admin/dynamics.html",
+			"spread": false
+		},
+		{
+			"title": "评论管理",
+			"icon": "layui-icon layui-icon-dialogue",
+			"href": "/admin/comment.html",
+			"spread": false
+		},
+		{
+			"title": "其他页面",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "404页面",
+					"icon": "&#xe61c;",
+					"href": "/admin/404.html",
+					"spread": false
+				},
+				{
+					"title": "登录",
+					"icon": "&#xe609;",
+					"href": "/core/login.html",
+					"spread": false,
+					"target": "_blank"
+				}
+			]
+		}
+	],
+	"memberCenter": [
+		{
+			"title": "用户中心",
+			"icon": "&#xe612;",
+			"href": "/admin/user.html",
+			"spread": false
+		},
+		{
+			"title": "角色授权管理",
+			"icon": "layui-icon layui-icon-auz",
+			"href": "/admin/role.html",
+			"spread": false
+		},
+		{
+			"title": "管理员管理",
+			"icon": "layui-icon layui-icon-group",
+			"href": "/admin/administrastor.html",
+			"spread": false
+		}
+
+	],
+	"systemeSttings": [
+		{
+			"title": "系统基本参数",
+			"icon": "&#xe631;",
+			"href": "",
+			"spread": false
+		},{
+			"title": "系统日志",
+			"icon": "icon-log",
+			"href": "",
+			"spread": false
+		},{
+			"title": "友情链接",
+			"icon": "&#xe64c;",
+			"href": "",
+			"spread": false
+		},{
+			"title": "图标管理",
+			"icon": "&#xe857;",
+			"href": "",
+			"spread": false
+		}
+	],
+	"seraphApi": [
+		{
+			"title": "三级联动模块",
+			"icon": "icon-mokuai",
+			"href": "",
+			"spread": false
+		},{
+			"title": "bodyTab模块",
+			"icon": "icon-mokuai",
+			"href": "",
+			"spread": false
+		},{
+			"title": "三级菜单",
+			"icon": "icon-mokuai",
+			"href": "",
+			"spread": false
+		}
+	]
+}
+
+

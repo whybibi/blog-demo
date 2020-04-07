@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登陆</title>
+    <link th:href="@{/css/core/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/core/googlefronts.css}" rel="stylesheet">
+    <link th:href="@{/css/core/main.css}" rel="stylesheet">
+    <link th:href="@{/css/core/ready.css}" rel="stylesheet">
+    <style>
+        .row{
+            margin:0;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="row" style="background: gray">
+        <div class="col-md-4" style="margin: 0 auto;margin-top: 5%">
+            <div class="card">
+            <div class="card-header">
+                <div class="card-title">后台管理登陆</div>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="nameInput">用户名</label>
+                    <input type="text" class="form-control input-square" id="nameInput" placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <label for="pwdInput">密码</label>
+                    <input type="password" class="form-control input-square" id="pwdInput" placeholder="密码">
+                </div>
+                <div class="form-group">
+                    <label for="roleSelect">角色</label>
+                    <select class="form-control input-square" id="roleSelect" v-cloak>
+                        <option v-for="role in roleList" :value="role.id">{{role.roleName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-action">
+                <button class="btn btn-danger">取消</button>
+                <button class="btn btn-success" id="logSubmit">登陆</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script th:src="@{/js/core/core/jquery.3.2.1.min.js}"></script>
+    <script th:src="@{/js/core/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js}"></script>
+    <script th:src="@{/js/core/core/popper.min.js}"></script>
+    <script th:src="@{/js/core/core/bootstrap.min.js}"></script>
+    <script th:src="@{/js/core/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
+    <script th:src="@{/js/core/plugin/bootstrap-toggle/bootstrap-toggle.min.js}"></script>
+    <script th:src="@{/js/core/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
+    <script th:src="@{/js/vue.js}"></script>
+    <script th:src="@{/js/validate.js}"></script>
+    <script th:src="@{/js/layer/layer.js}"></script>
+    <script th:src="@{/js/core/ready.js}"></script>
+<script>
+
+    $(function () {
+
+        loadRoleList();
+        function loadRoleList(){
+            $.post("/public_admin/roles",function(data){
+                if(data.success){
+                    var vue = new Vue({
+                        el:"#roleSelect",
+                        data:{roleList:data.roleList},
+                    });
+                }
+            });
+        }
+
+        $("#logSubmit").click(function () {
+            if(!validate($("#nameInput").val(),"用户名",1,25))
+                return false;
+            if(!validate($("#pwdInput").val(),"密码",6,15))
+                return false;
+            var formData = new FormData();
+            formData.append("userName",$("#nameInput").val());
+            formData.append("passWord",$("#pwdInput").val());
+            formData.append("roleId",$("#roleSelect").val());
+            $.ajax({
+                url:"/public_admin/admin_login",
+                type:"POST",
+                data:formData,
+                contentType:false,
+                processData:false,
+                cache:false,
+                dataType:"JSON",
+                success:function(data){
+                    if(LayerMsg(data)){
+                        window.location.href = "/admin/index.html";
+                    }
+                }
+            });
+        });
+
+
+    })
+
+
+
+</script>
+</body>
+</html>

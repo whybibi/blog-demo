@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link th:href="@{/sui/dist/css/sm.css}" rel="stylesheet">
+    <link th:href="@{/sui/dist/css/sm-extend.css}" rel="stylesheet">
+    <link th:href="@{/sui/dist/css/icon.css}" rel="stylesheet">
+    <style>
+        /*解决侧滑侧边栏报错错误*/
+        * { touch-action: pan-y; }
+        .head_img{
+            width: 60%;
+            height: 60%;
+        }
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+        textarea{
+            border:0;
+            background-color:transparent;
+            /*scrollbar-arrow-color:yellow;
+            scrollbar-base-color:lightsalmon;
+            overflow: hidden;*/
+            color: #666464;
+            width: 100%;
+        }
+        .dynamics_img{
+            width: 20%;
+            height: 20%;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div class="page-group">
+    <div id="page-nav-bar" class="page">
+        <header class="bar bar-nav">
+            <shiro:authenticated><a href="javascript:;" class="button button-link button-nav pull-left open-panel icon-user" data-panel='#panel-left'>菜单</a></shiro:authenticated>
+            <h1 class="title">我的</h1>
+        </header>
+        <nav class="bar bar-tab">
+            <a class="tab-item external" href="/index">
+                <span class="icon icon-home"></span>
+                <span class="tab-label">主页</span>
+            </a>
+            <shiro:authenticated>
+                <a class="tab-item external" href="/email">
+                    <span class="icon icon-message"></span>
+                    <span class="tab-label">消息</span>
+                    <span class="badge">1</span>
+                </a>
+            </shiro:authenticated>
+            <shiro:authenticated>
+                <a class="tab-item external active" href="/my">
+                    <span class="icon icon-app"></span>
+                    <span class="tab-label">我的</span>
+                    <span class="badge">1</span>
+                </a>
+            </shiro:authenticated>
+        </nav>
+        <div class="content">
+            <div class="content-block-title">关于我的</div>
+            <div class="list-block">
+                <ul>
+                    <li class="item-content open-popup" data-popup=".popup-services">
+                        <div class="item-media"><i class="icon icon-form-camera"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">发表动态</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-form-zan"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">我得到的赞</div>
+                            <div class="item-after"><span class="badge" style="background-color: #ff5d42;color: white;font-weight: bold">5</span></div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-form-bell"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">我收到的评论</div>
+                            <div class="item-after"><span class="badge" style="background-color: #ff5d42;color: white;font-weight: bold">5</span></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <p><a href="javascript:;" class="open-popup" data-popup=".popup-about">打开 about 弹层</a></p>
+                <p><a href="javascript:;" class="open-popup" data-popup=".popup-services">打开 service 弹层</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!--外部附件-->
+    <!--内联page-->
+    <div class="page" id="index-inner">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back" data-transition='slide-out'>
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <h1 class="title">图片详情</h1>
+        </header>
+        <div class="content">
+            添加相应内容
+            <div class="card-content"><img src="https://img1.gtimg.com/rcdimg/20190426/08/5334181890_273x145.jpg" width="100%"></div>
+        </div>
+    </div>
+    <!-- About底部全屏弹窗 -->
+    <div class="popup popup-about">
+        <div class="content-block">
+            <p>About</p>
+            <p><a href="javascript:;" class="close-popup">Close popup</a></p>
+            <p>Lorem ipsum dolor ...</p>
+        </div>
+    </div>
+    <!-- 底部弹出发表动态 -->
+    <div class="popup popup-services">
+        <div class="content-block">
+            <h4>发表动态</h4>
+            <textarea rows="5" name="message" id="message" placeholder="请在此输入动态内容"></textarea>
+            <a href="javascript:;" class="file"><span>选择图片</span>
+                <input id="img" type="file" name="img" multiple="multiple" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"/>
+            </a>
+            <div id="imgDiv"></div><br/>
+            <p><a id="submitDynamics" href="javascript:;" class="button button-big button-fill button-success">发布</a></p>
+            <p><a href="javascript:;" class="close-popup button button-big button-fill button-danger">取消</a></p>
+        </div>
+    </div>
+
+    <div class="panel-overlay"></div>
+    <!--左侧侧滑页面 -->
+    <shiro:authenticated><!--登陆后才能打开-->
+        <div class="panel panel-left panel-reveal theme-dark" id='panel-left'>
+            <div class="content-block">
+                <p><img class="head_img" th:src="${session.userSession.headImg}"/></p>
+                <p><span style="color: gray; font-size: 1.5rem" th:text="${session.userSession.userName}"></span>下午好</p>
+                <p>我的好友</p>
+                <p><a href="#index-inner">测试页面</a></p>
+                <p><a href="/logout">退出登陆</a></p>
+                <p><a href="javascript:;" class="close-panel">关闭</a></p>
+            </div>
+        </div>
+    </shiro:authenticated>
+
+</div>
+
+
+
+<script th:src="@{/js/jquery/jquery.js}"></script>
+<script th:src="@{/sui/dist/js/zepto.js}"></script>
+<script th:src="@{/sui/dist/js/sm.js}"></script>
+<script th:src="@{/sui/dist/js/sm-extend.js}"></script>
+<script th:src="@{/js/vue.js}"></script>
+<script th:src="@{/js/validate.js}"></script>
+<script th:src="@{/js/basic/index.js}"></script>
+<script th:src="@{/js/basic/load.js}"></script>
+<script th:src="@{/js/basic/public.js}"></script>
+<script th:src="@{/js/basic/my.js}"></script>
+<script th:src="@{/js/layer/layer.js}"></script>
+
+
+</body>
+</html>
