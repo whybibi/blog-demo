@@ -36,7 +36,7 @@
         <druid.version>1.1.10</druid.version>
         <thymeleaf.version>3.0.10.RELEASE</thymeleaf.version>
         <thymeleaf-extras-shiro>2.0.0</thymeleaf-extras-shiro>
-        <shiro-core.version>1.4.2</shiro-core.version>
+        <shiro-core.version>1.6.0</shiro-core.version>
         <shiro-spring.version>1.4.2</shiro-spring.version>
         <shiro-ehcache.version>1.4.2</shiro-ehcache.version>
         <commons-lang3.version>3.4</commons-lang3.version>
